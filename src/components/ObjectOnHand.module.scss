@@ -1,0 +1,25 @@
+.container {
+	width: 100vw;
+	min-height: 100vh;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.title {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+}
+
+.video {
+	width: 100vw;
+	height: 100vh;
+}
+
+.threeCanvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

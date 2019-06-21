@@ -53,20 +53,22 @@ const initHandDetection = async () => {
 	}
 };
 
-export const runDetection = async () => {
+export const runDetection = async handler => {
 	if (!model) throw new Error('Model needs to to be set.');
 	if (!videoEl) throw new Error('video element needs to be set.');
-	if (!canvasEl) throw new Error('Canvas element needs to be set.');
 
 	const predictions = await model.detect(videoEl);
-	console.log({ predictions });
+	handler && handler(predictions);
 
-	model.renderPredictions(
-		predictions,
-		canvasEl,
-		canvasEl.getContext('2d'),
-		videoEl
-	);
+	// in case you want to render prediction, comment out lines beloew and setCanvas() in useHandDetection;
+
+	// if (!canvasEl) throw new Error('Canvas element needs to be set.');
+	// model.renderPredictions(
+	// 	predictions,
+	// 	canvasEl,
+	// 	canvasEl.getContext('2d'),
+	// 	videoEl
+	// );
 };
 
 export const useHandDetection = () => {
@@ -76,15 +78,46 @@ export const useHandDetection = () => {
 
 	useEffect(() => {
 		setVideoEl(videoRef.current);
-		setCanvasEl(canvasRef.current);
+		// setCanvasEl(canvasRef.current);
 		initHandDetection(videoRef.current)
 			.then(() => setIsReady(true))
 			.catch(err => console.error('Something went wrong at init.'));
-	}, [videoEl]);
+	}, []);
 
 	return {
 		videoRef,
 		canvasRef,
 		isReady
+	};
+};
+
+export const useHandDetectionWithPredictinos = (interval = 500) => {
+	const videoRef = useRef(null);
+	const canvasRef = useRef(null);
+	const [isReady, setIsReady] = useState(false);
+	const [predictions, setPredictions] = useState(null);
+
+	useEffect(() => {
+		setVideoEl(videoRef.current);
+		// setCanvasEl(canvasRef.current);
+		initHandDetection(videoRef.current)
+			.then(() => setIsReady(true))
+			.catch(err => console.error('Something went wrong at init.'));
+	}, []);
+
+	useEffect(() => {
+		if (!isReady) return;
+
+		const proceedDetection = () => {
+			runDetection(predictions => setPredictions(predictions));
+		};
+		setInterval(proceedDetection, interval);
+	}, [isReady]);
+
+	return {
+		videoRef,
+		canvasRef,
+		isReady,
+		predictions
 	};
 };
