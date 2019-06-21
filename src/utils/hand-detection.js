@@ -62,13 +62,13 @@ export const runDetection = async handler => {
 
 	// in case you want to render prediction, comment out lines beloew and setCanvas() in useHandDetection;
 
-	// if (!canvasEl) throw new Error('Canvas element needs to be set.');
-	// model.renderPredictions(
-	// 	predictions,
-	// 	canvasEl,
-	// 	canvasEl.getContext('2d'),
-	// 	videoEl
-	// );
+	if (!canvasEl) throw new Error('Canvas element needs to be set.');
+	model.renderPredictions(
+		predictions,
+		canvasEl,
+		canvasEl.getContext('2d'),
+		videoEl
+	);
 };
 
 export const useHandDetection = () => {
@@ -99,7 +99,7 @@ export const useHandDetectionWithPredictinos = (interval = 500) => {
 
 	useEffect(() => {
 		setVideoEl(videoRef.current);
-		// setCanvasEl(canvasRef.current);
+		setCanvasEl(canvasRef.current);
 		initHandDetection(videoRef.current)
 			.then(() => setIsReady(true))
 			.catch(err => console.error('Something went wrong at init.'));
