@@ -78,8 +78,8 @@ export const useHandDetection = () => {
 
 	useEffect(() => {
 		setVideoEl(videoRef.current);
-		// setCanvasEl(canvasRef.current);
-		initHandDetection(videoRef.current)
+		setCanvasEl(canvasRef.current);
+		initHandDetection()
 			.then(() => setIsReady(true))
 			.catch(err => console.error('Something went wrong at init.'));
 	}, []);
@@ -112,7 +112,7 @@ export const useHandDetectionWithPredictinos = (interval = 500) => {
 			runDetection(predictions => setPredictions(predictions));
 		};
 		setInterval(proceedDetection, interval);
-	}, [isReady]);
+	}, [isReady, interval]);
 
 	return {
 		videoRef,

@@ -13,9 +13,7 @@ const initCamera = camera => {
 const generateRenderer = props => new THREE.WebGLRenderer(props);
 
 const initRenderer = renderer => {
-	// renderer.setClearColor('#fff');
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	// ref.current.appendChild(renderer.domElement);
 };
 
 export const generateBox = (positionX = 0, positionY = 0, positionZ = 0) => {
@@ -23,8 +21,6 @@ export const generateBox = (positionX = 0, positionY = 0, positionZ = 0) => {
 	const material = new THREE.MeshLambertMaterial({ color: 0xffcc00 });
 	const mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(positionX, positionY, positionZ);
-	// mesh.rotation.set(1, 3, 1);
-	// mesh.scale.set(10, 1, 1);
 	return mesh;
 };
 
@@ -37,7 +33,7 @@ const addLight = scene => {
 	scene.add(aLight);
 };
 
-export const loadSalami = scene =>
+export const loadSalami = () =>
 	new Promise((resolve, reject) => {
 		const loader = new FBXLoader();
 		loader.load(SALAMI_FBX_MODEL_PATH, object3d => {
